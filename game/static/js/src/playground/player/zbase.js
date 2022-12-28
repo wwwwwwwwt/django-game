@@ -20,6 +20,11 @@ class Player extends AcGameObject {
         this.spent_time = 0;
 
         this.cur_skill = null;
+
+        if (this.is_me) {
+            this.img = new Image();
+            this.img.src = this.playground.root.settings.photo;
+        }
     }
 
     start() {
@@ -38,11 +43,12 @@ class Player extends AcGameObject {
             return false;
         });
         this.playground.game_map.$canvas.mousedown(function(e) {
+            const rect = outer.ctx.canvas.getBoundingClientRect();
             if (e.which === 3) {
-                outer.move_to(e.clientX-rect.left, e.clientY-rect.top);
+                outer.move_to(e.clientX - rect.left, e.clientY - rect.top);
             } else if (e.which === 1) {
                 if (outer.cur_skill === "fireball") {
-                    outer.shoot_fireball(e.clientX-rect.left, e.clientY-rect.top);
+                    outer.shoot_fireball(e.clientX - rect.left, e.clientY - rect.top);
                 }
 
                 outer.cur_skill = null;
@@ -50,7 +56,6 @@ class Player extends AcGameObject {
         });
 
         $(window).keydown(function(e) {
-          const rect = outer.ctx.canvas.getBoundingClientRect();
             if (e.which === 81) {  // q
                 outer.cur_skill = "fireball";
                 return false;
@@ -143,6 +148,20 @@ class Player extends AcGameObject {
         this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
         this.ctx.fillStyle = this.color;
         this.ctx.fill();
+        if (this.is_me) {
+            this.ctx.save();
+            this.ctx.beginPath();
+            this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+            this.ctx.stroke();
+            this.ctx.clip();
+            this.ctx.drawImage(this.img, this.x - this.radius, this.y - this.radius, this.radius * 2, this.radius * 2); 
+            this.ctx.restore();
+        } else {
+            this.ctx.beginPath();
+            this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+            this.ctx.fillStyle = this.color;
+            this.ctx.fill();
+        }
     }
 
     on_destroy() {
