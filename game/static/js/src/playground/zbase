@@ -13,7 +13,6 @@ class AcGamePlayground {
         let colors = ["blue", "red", "pink", "grey", "green"];
         return colors[Math.floor(Math.random() * 5)];
     }
-
     create_uuid() {
         let res = "";
         for (let i = 0; i < 8; i ++ ) {
@@ -30,7 +29,7 @@ class AcGamePlayground {
             outer.resize();
         });
 
-    }
+}
 
     resize() {
         this.width = this.$playground.width();
@@ -79,9 +78,9 @@ class AcGamePlayground {
     }
 
     hide() {  // 关闭playground界面
-       // while (this.players && this.players.length > 0) {
-          //  this.players[0].destroy();
-      //  }
+        while (this.players && this.players.length > 0) {
+            this.players[0].destroy();
+        }
 
         if (this.game_map) {
             this.game_map.destroy();
@@ -99,7 +98,6 @@ class AcGamePlayground {
         }
 
         this.$playground.empty();
-
         this.$playground.hide();
     }
 }

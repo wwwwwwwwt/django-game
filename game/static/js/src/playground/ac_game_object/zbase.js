@@ -24,10 +24,12 @@ class AcGameObject{
     }
     update(){//每一帧都会执行
     }
-
+    late_update(){//在每一帧最后执行一次
+    }
     on_destroy(){//在被销毁前执行一次
     }
     destroy(){//删掉该物体
+        this.on_destroy();
         for(let i = 0;i<AC_GAME_OBJECTS.length;i++){
             if(AC_GAME_OBJECTS[i]===this){
                 AC_GAME_OBJECTS.splice(i,1);
@@ -48,6 +50,10 @@ let AC_GAME_ANIMATION = function(timestamp){
             obj.timedelta = timestamp - last_timestamp;
             obj.update();
         }
+    }
+    for (let i = 0; i < AC_GAME_OBJECTS.length; i ++ ) {
+        let obj = AC_GAME_OBJECTS[i];
+        obj.late_update();
     }
     last_timestamp = timestamp;
     requestAnimationFrame(AC_GAME_ANIMATION);
